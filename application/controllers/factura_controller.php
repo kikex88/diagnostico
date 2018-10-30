@@ -40,6 +40,30 @@
 			$result = $this->producto->getProducto();
 			echo json_encode($result);
 		}
+
+		public function guardar(){
+			//factura
+			$num_factura = $this->input->post('num_factura');
+			$id_cliente = $this->input->post('cliente');
+			$fecha_factura = $this->input->post('fecha_factura');
+			$num_pago = $this->input->post('forma_pago');
+
+
+			$this->factura->agregarFactura($num_factura,$id_cliente,$fecha_factura,$num_pago);
+
+			//detalle
+			$id_producto = $this->input->post('producto');
+			$cantidad = $this->input->post('cantidad');
+			$precioD = $this->input->post('precio');
+
+
+			$this->factura->agregarDetalle($num_factura,$id_producto,$cantidad,$precioD);
+		}
+
+		public function getPago(){
+			$result = $this->factura->pago();
+			echo json_encode($result);
+		}
 	}
 
 

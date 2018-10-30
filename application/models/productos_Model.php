@@ -54,6 +54,21 @@ class Productos_Model extends CI_Model
 			return false;
 		}
 	}
+
+	public function getPrecio($id){
+		$this->db->select('precio_producto');
+		$this->db->from('producto');
+		$this->db->where('id_producto',$id);
+		$query = $this->db->get();
+
+		if($query->num_rows()>0){
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+
 }
 
 

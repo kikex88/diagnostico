@@ -73,5 +73,12 @@ class Producto_controller extends CI_Controller
 		$this->index();
 	}
 
+	//funcion para obtener el precio del producto
+	public function precio(){
+		$id = $this->input->post('id');
+		$result = $this->producto->getPrecio($id);
+		echo json_encode($result);
+	}
+
 }//fin de la clase 
 ?>

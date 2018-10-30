@@ -59,7 +59,7 @@
 			</div>
 			<hr>
 
-			<form action="">
+			<form action="<?php echo base_url()?>factura_controller/guardar" method="post">
 				<div class="row">
 					<div class="col-md-4">
 						Numero de Factura
@@ -75,25 +75,44 @@
 						Cliente
 						<select class="form-control" name="cliente" id="cliente"></select>
 					</div>
+					<div class="col-md-4">
+						Forma de pago
+						<select class="form-control" name="forma_pago" id="forma_pago"></select>
+					</div>
 				</div>
 				<hr>
 				<br>
 				<!--para agregar el detalle-->
-				<div>
-					<button class="btn btn-success" type="button" id="agregar" name="agregar">mas +</button>
+				<div class="row">
+					<div class="col-md-4">
+						<button class="btn btn-success" type="button" id="agregar" name="agregar">mas +</button>
+					</div>
+					<div class="col-md-4">
+						Total:
+						<input type="number" step="any" class="form-control" name="total" id="total">
+					</div>
 				</div>
+				<br><br>
 				<center>
 					<h3>Detalle</h3>
 				</center>
 				<center>
 					<table id="tabla">
-						<tr class="fila-fija">
-							<td> <select class="form-control" name="producto[]" id="producto"></select>
-							<td> <input required="" type="number" name="cantidad[]" id="cantidad" placeholder="cantidad"> </td>
-							<td> <input required="" type="number" step="any" name="precio[]" id="precio"  placeholder="precio"> </td>
-						</tr>
+						
+						<thead>
+							<td>Producto</td>
+							<td>Cantidad</td>
+							<td>Precio</td>
+						</thead>
+						<tbody>
+							
+						</tbody>
 					</table>
 				</center>
+
+				<div class="col-md-4">
+					<input type="submit" class="btn btn-warning" value="Guardar">
+				</div>
 
 			</form>
 
@@ -102,13 +121,158 @@
 	<script>
 	$(document).ready(function(){
 		cliente();
-		producto();
+		pago();
+		
+		$('#total').val(0.0);
+
+		agregar()
+
+
 	})
 
 		//clonar los inputs
-		$('#agregar').on('click',function(){
+		/*$('#agregar').on('click',function(){
 			$('#tabla tbody tr:eq(0)').clone().removeClass('fila-fija').appendTo('#tabla');
+		});*/
+
+		//selecciona la fila y la elimina
+		$(document).on('click','.eliminar',function(){
+			var parent = $(this).parents().get(0);
+			$(parent).remove();
 		});
+
+		$(document).ready(function(){
+			$('#agregar').click(function(){
+				agregar();
+			});
+		})
+
+		//variables globales
+		var cont=0;//sirve para contar el numero de elementos que se crean
+		var total=0.0 ;
+
+
+		function pago(){
+			$.ajax({
+				url: '<?php echo base_url() ?>factura_controller/getPago',
+				asynce: false,
+				dataType: 'json',
+				success: function(data){
+
+					$.each(data,function(key, registro) {
+						$("#forma_pago").append('<option value='+registro.num_pago+'>'+registro.nombre_modo_pago +'</option>');
+			      	});
+
+					
+				}
+			})
+		}
+
+		function agregar(){
+			producto();
+			cont++;
+			var fila='<tr class="selected" id="fila'+cont+'" >'+
+							'<td> <select class="form-control" onblur="getSelect(this.id)" onblur="getSelect(this.id)" name="producto[]" id="producto'+cont+'"><option></option></select>'+
+							'<td> <input required="" type="number" onpaste="return false" onkeypress="return validar(event)" onkeyup="(precio(this.id));" name="cantidad[]" id="cantidad'+cont+'" placeholder="cantidad"> </td>'+
+							'<td> <input required="" type="number" step="any" name="precio[]" id="precio'+cont+'"  placeholder="precio"> </td>'+	
+						'</tr>'
+			$('#tabla').append(fila);
+		}
+
+		function validar(e){
+			key=e.keyCode || e.which;
+
+			teclado=String.fromCharCode(key);
+
+			numeros = "0123456789";
+
+			especiales = "8-37-38-46";//array
+
+			teclado_especial = false;
+
+			for(var i in especiales){
+				if(key == especiales[i]){
+					teclado_especial=true;
+				}
+			}
+
+			if(numeros.indexOf(teclado)== -1 && !teclado_especial){
+				return false;
+			}
+		}
+
+		//variables globales a usar para obtener el valor de los select
+		var valor_select;
+
+		function getSelect(id){
+			var cad;
+			var valor;
+			var idProducto;
+
+			cad = id.split('producto');
+			valor = cad[1];
+			idProducto = '#producto' + valor;
+
+			valor_select = $(idProducto).val();
+			console.log(valor_select);
+		}
+
+		function precio(id){
+			
+			var cantidad;//guarda el valor de la cantidad
+			var cad;//nos guardara el id cortado, ya que nos interesa saber el número
+			var valor;// guardara el valor numero del id
+			var id_precio;
+			var id_cantidad;
+			var id_producto;
+			var option;
+
+
+			cad = id.split('cantidad');
+
+			valor = cad[1];
+
+			//creamos el id de precio
+			id_precio = 'precio'+valor;
+
+			console.log(id_precio);
+
+			//creamos los id que necesitaremos para obtener sus valores y poder 
+			id_cantidad = '#cantidad'+ valor;
+			id_precio = '#precio' + valor;
+			id_producto = '#producto' + valor;
+			console.log(id_precio);
+			cantidad = $(id_cantidad).val();
+			cantidad = parseInt(cantidad);
+
+			if(Number.isInteger(cantidad) == true ){
+				
+				option = valor_select; 
+				console.log('option');
+				console.log(option);
+
+				$.ajax({
+					type: 'post',
+					url: '<?php echo base_url() ?>producto_controller/precio',
+					data: {'id': option},
+					dataType: 'json',
+					success: function(data){
+
+						var precio_t = cantidad * data[0].precio_producto;
+						$(id_precio).val(precio_t);
+						
+						total = total + precio_t;
+						$('#total').val(total);
+
+						//precio_t = 0.00;
+					},
+				});
+
+
+			}
+			
+			
+		}
 
 		function num_java(){
 			if( $('#tipoJAVA').attr('checked','checked') ){
@@ -208,12 +372,12 @@
 				asynce: false,
 				dataType: 'json',
 				success: function(data){
-
+					var id = '#producto'+ cont;
+					console.log(id);
 					$.each(data,function(key, registro) {
-						$("#producto").append('<option value='+registro.id_producto+'>'+registro.nombre_producto + '</option>');
-			      	});
 
-					
+						$(id).append('<option value='+registro.id_producto+'>'+registro.nombre_producto + '</option>');
+			      	});
 				}
 			})
 		}

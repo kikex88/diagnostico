@@ -19,6 +19,33 @@
 				return false;
 			}
 		}
+
+		public function pago(){
+			$this->db->select('num_pago,nombre_modo_pago');
+			$this->db->from('modo_pago');
+			$query = $this->db->get();
+
+			if($query->num_rows()>0){
+				return $query->result();
+			}else{
+				return false;
+			}
+		}
+
+		public function agregarFactura($num_factura,$id_cliente,$fecha_factura,$num_pago){
+			$this->db->query("CALL sp_insercion_factura($num_factura,$id_cliente,$fecha_factura,$num_pago)");
+		}
+
+		public function agregarDetalle($num_factura,$id_producto,$cantidad,$precioD){
+			$data = array(
+				'id_factura' => $num_factura,
+				'id_producto' => $id_producto,
+				'cantidad' => $cantidad,
+				'precio_detalle' => $precioD
+			);
+
+			$this->db->insert('detalle', $data);
+		}
 	}
 
 
