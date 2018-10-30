@@ -57,26 +57,168 @@
 				  </label>
 				</div>	
 			</div>
+			<hr>
 
-			<div>
-				Numero de Factura
-				<input type="text" id="num_factura" name="num_factura">
-			</div>
+			<form action="">
+				<div class="row">
+					<div class="col-md-4">
+						Numero de Factura
+						<input class="form-control" type="text" id="num_factura" name="num_factura" required="">
+					</div>
+					<div class="col-md-4">
+						fecha:
+						<input class="form-control" type="date" id="fecha_factura" name="fecha_factura" required="">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						Cliente
+						<select class="form-control" name="cliente" id="cliente"></select>
+					</div>
+				</div>
+				<hr>
+				<br>
+				<!--para agregar el detalle-->
+				<div>
+					<button class="btn btn-success" type="button" id="agregar" name="agregar">mas +</button>
+				</div>
+				<center>
+					<h3>Detalle</h3>
+				</center>
+				<center>
+					<table id="tabla">
+						<tr class="fila-fija">
+							<td> <select class="form-control" name="producto[]" id="producto"></select>
+							<td> <input required="" type="number" name="cantidad[]" id="cantidad" placeholder="cantidad"> </td>
+							<td> <input required="" type="number" step="any" name="precio[]" id="precio"  placeholder="precio"> </td>
+						</tr>
+					</table>
+				</center>
+
+			</form>
 
 	</div>
 
 	<script>
+	$(document).ready(function(){
+		cliente();
+		producto();
+	})
+
+		//clonar los inputs
+		$('#agregar').on('click',function(){
+			$('#tabla tbody tr:eq(0)').clone().removeClass('fila-fija').appendTo('#tabla');
+		});
+
 		function num_java(){
 			if( $('#tipoJAVA').attr('checked','checked') ){
-				$('#num_factura').val('java');
+				var tipo = 'JAVA';
+				$.ajax({
+					type: 'POST',
+					url: '<?php echo base_url() ?>factura_controller/getFactura',
+					data: {'tipo': tipo},
+					asynce: false,
+					dataType: 'json',
+					success: function(data){
+						if(data[0].num_factura == null){
+							$('#num_factura').val('JAVA0001');
+						}else{
+							var indice = data[0].num_factura;
+							var cod = indice.split('JAVA');
+							var num = parseInt(cod[1]);
+							var factura;
+							num += 1;console.log(num);
+
+							if(num >=0 && num <= 9){
+								factura = 'JAVA000'+num;
+								$('#num_factura').val(factura);
+							}else if(num >= 10 && num <=99){
+								factura = 'JAVA00'+num;
+								$('#num_factura').val(factura);
+							}else if(num >=100 && num <= 999){
+								factura = 'JAVA0'+num;
+								$('#num_factura').val(factura);
+							}else{
+								factura = 'JAVA'+num;
+								$('#num_factura').val(factura);
+							}
+						}
+					}
+				});
 			}
 		}
 
 		function num_php(){
 			if( $('#tipoPHP').attr('checked','checked') ){
-				$('#num_factura').val('php');
+				var tipo = 'PHP';
+				$.ajax({
+					type: 'POST',
+					url: '<?php echo base_url() ?>factura_controller/getFactura',
+					data: {'tipo': tipo},
+					asynce: false,
+					dataType: 'json',
+					success: function(data){
+						if(data[0].num_factura == null){
+							$('#num_factura').val('PHP0001');
+						}else{
+							var indice = data[0].num_factura;
+							var cod = indice.split('PHP');
+							var num = parseInt(cod[1]);
+							var factura;
+							num += 1;console.log(num);
+
+							if(num >=0 && num <= 9){
+								factura = 'PHP000'+num;
+								$('#num_factura').val(factura);
+							}else if(num >= 10 && num <=99){
+								factura = 'PHP00'+num;
+								$('#num_factura').val(factura);
+							}else if(num >=100 && num <= 999){
+								factura = 'PHP0'+num;
+								$('#num_factura').val(factura);
+							}else{
+								factura = 'PHP'+num;
+								$('#num_factura').val(factura);
+							}
+						}
+					}
+				});
 			}
 		}
+
+		function cliente(){
+			$.ajax({
+				url: '<?php echo base_url() ?>factura_controller/getCliente',
+				asynce: false,
+				dataType: 'json',
+				success: function(data){
+
+					$.each(data,function(key, registro) {
+						$("#cliente").append('<option value='+registro.id_cliente+'>'+registro.nombre_cliente + ' '+ registro.apellido_cliente+'</option>');
+			      	});
+
+					
+				}
+			})
+		}
+
+		function producto(){
+			$.ajax({
+				url: '<?php echo base_url() ?>factura_controller/getProducto',
+				asynce: false,
+				dataType: 'json',
+				success: function(data){
+
+					$.each(data,function(key, registro) {
+						$("#producto").append('<option value='+registro.id_producto+'>'+registro.nombre_producto + '</option>');
+			      	});
+
+					
+				}
+			})
+		}
+
+
 	</script>
 
 

@@ -42,6 +42,18 @@ class Productos_Model extends CI_Model
 			return false;
 		}
 	}
+
+	public function getProducto(){
+		$this->db->select('*');
+		$this->db->from('producto');
+		$query = $this->db->get();
+
+		if($query->num_rows()>0){
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
 }
 
 
