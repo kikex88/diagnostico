@@ -100,9 +100,9 @@
 					<table id="tabla">
 						
 						<thead>
-							<td>Producto</td>
-							<td>Cantidad</td>
-							<td>Precio</td>
+							<td>PRODUCTO</td>
+							<td>CANTIDAD</td>
+							<td>PRECIO</td>
 						</thead>
 						<tbody>
 							
