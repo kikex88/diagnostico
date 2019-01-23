@@ -28,7 +28,7 @@ class pdf_controller extends CI_Controller
 		$pdf->AddPage();
 		$pdf->SetFont('Arial','B',10);
 
-		#Creamos un foreach
+		#Creamos un for
 		for($i=0;$i<count($data);$i++) {
 			$pdf->Cell(40,10,$data[$i]['nombre_cliente']);
 			$pdf->Cell(40,10,$data[$i]['apellido_cliente']);
@@ -36,7 +36,7 @@ class pdf_controller extends CI_Controller
 			$pdf->Cell(40,10,$data[$i]['fecha_nacimiento']);
 			$pdf->Cell(40,10,$data[$i]['telefono']);
 			$pdf->Cell(40,10,$data[$i]['email']);
-			$pdf->ln(5);
+			$pdf->ln(5);//genera un salto de pagina el numero representa la altura o sea la separación
 		}
 		
 		$pdf->Output();
