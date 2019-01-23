@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 4.8.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2018 a las 00:54:32
--- Versión del servidor: 10.1.32-MariaDB
--- Versión de PHP: 7.2.5
+-- Tiempo de generación: 23-01-2019 a las 07:04:33
+-- Versión del servidor: 10.1.31-MariaDB
+-- Versión de PHP: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -73,7 +73,12 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `direccion`, `fecha_nacimiento`, `telefono`, `email`) VALUES
-(1, 'Enrique', 'Quezada', 'san salvador', '1988-08-06', '22222222', 'enrique.qzada@gmail.com');
+(1, 'Enrique', 'Quezada', 'san salvador', '1988-08-06', '22222222', 'enrique.qzada@gmail.com'),
+(2, 'Ana Raquel', 'Hernandez Morán', 'Zacamil', '1996-03-23', ' 1234-1111', 'raquel@gmail.com'),
+(3, 'jose', 'perez', 'san salvador', '2018-10-02', ' 1234-4567', 'jose@gmail.com'),
+(4, 'mario', 'cantinflas', 'san salvador', '2018-10-01', ' 1234-5678', 'mario@gmail.com'),
+(5, 'victor', 'cañaz', 'costa rica', '2018-10-03', ' 1234-2342', 'victo@gmail.com'),
+(6, 'emilio', 'ferrer', 'zacamil', '2018-10-10', ' 1234-5678', 'milo@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -83,7 +88,7 @@ INSERT INTO `cliente` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `dire
 
 CREATE TABLE `detalle` (
   `num_detalle` int(11) NOT NULL,
-  `id_factura` varchar(7) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `id_factura` varchar(8) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `id_producto` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `precio_detalle` float NOT NULL
@@ -94,7 +99,8 @@ CREATE TABLE `detalle` (
 --
 
 INSERT INTO `detalle` (`num_detalle`, `id_factura`, `id_producto`, `cantidad`, `precio_detalle`) VALUES
-(1, 'PHP0001', 1, 2, 20);
+(1, 'PHP0001', 1, 2, 20),
+(2, 'PHP0001', 2, 5, 77.5);
 
 --
 -- Disparadores `detalle`
@@ -166,7 +172,8 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_producto`, `stock`, `id_categoria`) VALUES
-(1, 'Camisas de hombre talla M', 10, 18, 1);
+(1, 'Camisas de hombre talla M', 10, 18, 1),
+(2, 'Pantalon talla 36', 15.5, 20, 1);
 
 --
 -- Índices para tablas volcadas
@@ -227,13 +234,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle`
 --
 ALTER TABLE `detalle`
-  MODIFY `num_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `num_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `modo_pago`
@@ -245,7 +252,7 @@ ALTER TABLE `modo_pago`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

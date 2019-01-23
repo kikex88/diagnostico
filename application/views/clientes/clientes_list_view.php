@@ -42,13 +42,18 @@
 
 	<div class="container" style="margin-top: 10px">
 		<div class="btn-group">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<a href="<?php echo site_url() ?>nuevo-cliente" class="btn btn-info">Agregar cliente</a>
 			</div>
 		</div>
 		<div class="btn-group">
-			<div class="col-md-8">
+			<div class="col-md-4">
 				<a href="<?php echo site_url() ?>nueva-factura" class="btn btn-success">Agregar Factura</a>
+			</div>
+		</div>
+		<div class="btn-group">
+			<div class="col-md-4">
+				<a href="<?php echo site_url() ?>pdf-cliente" class="btn btn-warning">PDF</a>
 			</div>
 		</div>
 		

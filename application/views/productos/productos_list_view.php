@@ -46,6 +46,11 @@
 				<a href="<?php echo site_url() ?>nuevo-producto" class="btn btn-success">Agregar categoria</a>
 			</div>
 		</div>
+		<div class="btn-group">
+			<div class="col-md-8">
+				<a href="<?php echo site_url() ?>pdf-producto" class="btn btn-warning">PDF</a>
+			</div>
+		</div>
 		
 	</div>
 

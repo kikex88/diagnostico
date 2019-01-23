@@ -18,6 +18,19 @@ class Clientes_Model extends CI_Model
 		}
 	}//fin de mostrar cliente
 
+	public function listapdf()
+	{
+		$this->db->select('c.*');
+		$this->db->from('cliente c');
+		$query = $this->db->get();
+
+		if($query->num_rows()>0){
+			return $query->result_array();
+		}else{
+			return false;
+		}
+	}
+
 	#función para traer la información de un cliente especifico junto a sus facturas asociadas
 	public function ver_cliente($id){
 		$this->db->select('c.*');

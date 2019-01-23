@@ -65,6 +65,10 @@ $route['nuevo-producto'] = 'producto_controller/nuevo_producto';
 #factura
 $route['nueva-factura'] = 'factura_controller/nueva_factura';
 
+#PDF
+$route['pdf-cliente'] = 'pdf_controller/pdf_cliente';
+$route['pdf-producto'] = 'pdf_controller/pdf_producto';
+
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
