@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require('assets/fpdf181/fpdf.php');
+require('assets/fpdf181/fpdf.php');//archivo requerido de la clase fpdf
 
 /**
  * Este controlador tendra la logica para mostrar el listado de clientes y productos
@@ -38,7 +38,6 @@ class pdf_controller extends CI_Controller
 			$pdf->Cell(40,10,$data[$i]['email']);
 			$pdf->ln(5);//genera un salto de pagina el numero representa la altura o sea la separación
 		}
-		
 		$pdf->Output();
 	}
 
